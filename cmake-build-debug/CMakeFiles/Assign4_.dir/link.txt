@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libAssign4_.a  CMakeFiles/Assign4_.dir/CPU.c.o CMakeFiles/Assign4_.dir/eye2eh.c.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libAssign4_.a
