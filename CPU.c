@@ -212,7 +212,7 @@ int main(int argc, char **argv) {
             processes[i].switches = 0;
 
             //printf(process);
-            assert(printf("this is the process", i) != -1);
+            //assert(printf("this is the process", i) != -1);
 
             //new_list.push_back(processes);
         }

@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <sys/errno.h>
-#include "CPU.h"
+#include "systemcall.h"
 
 /*
 ** Async-safe integer to a string. i is assumed to be positive. The number
