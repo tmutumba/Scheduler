@@ -125,7 +125,7 @@ void scheduler (int signum) {
 
     WRITESTRING("---- leaving scheduler\n");
 
-    exit(status);d
+    exit(status);
 
 }
 

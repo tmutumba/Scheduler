@@ -11,10 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f3d12b8-e708-42b6-9859-535b7a0ba014" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CPU.c" beforeDir="false" afterPath="$PROJECT_DIR$/CPU.c" afterDir="false" />
-    </list>
+    <list default="true" id="8f3d12b8-e708-42b6-9859-535b7a0ba014" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,8 +33,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CPU.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="116" column="24" selection-start-line="116" selection-start-column="24" selection-end-line="116" selection-end-column="24" />
+            <state relative-caret-position="1229">
+              <caret line="119" column="27" lean-forward="true" selection-start-line="119" selection-start-column="27" selection-end-line="119" selection-end-column="27" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -170,16 +167,15 @@
       <workItem from="1562787077507" duration="750000" />
       <workItem from="1562787848761" duration="3106000" />
       <workItem from="1562868633094" duration="9435000" />
-      <workItem from="1563395900740" duration="2316000" />
+      <workItem from="1563395900740" duration="2623000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15996000" />
+    <option name="totallyTimeSpent" value="16303000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="865" y="24" width="575" height="837" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.25958702" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -239,8 +235,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CPU.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="116" column="24" selection-start-line="116" selection-start-column="24" selection-end-line="116" selection-end-column="24" />
+        <state relative-caret-position="1229">
+          <caret line="119" column="27" lean-forward="true" selection-start-line="119" selection-start-column="27" selection-end-line="119" selection-end-column="27" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
