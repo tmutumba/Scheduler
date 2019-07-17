@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <stdio.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <assert.h>
@@ -37,6 +38,7 @@ struct PCB *running;
 
 int sys_time;
 int timer;
+int status;
 struct sigaction alarm_handler;
 struct sigaction child_handler;
 
@@ -96,6 +98,23 @@ void create_handler(int signum, struct sigaction action, void(*handler)(int)) {
 void scheduler (int signum) {
     WRITESTRING("---- entering scheduler\n");
     assert(signum == SIGALRM);
+    /* forking starts */
+    running ->state = READY;
+
+    running ->switches ++;
+    running ->interrupts ++;
+
+
+    processes[getpid()].pid = fork();
+    running = &processes[getpid()];
+
+    processes[getppid()].ppid = getppid();
+    processes[getpid()].pid = getpid();
+
+    processes[getpid()].started = clock();
+    processes[getpid()].state = RUNNING;
+
+    status = execl(processes[getpid()].name, processes[getpid()].name, NULL);
 
     WRITESTRING ("Continuing idle: ");
     WRITEINT (idle.pid, 6);
@@ -105,6 +124,9 @@ void scheduler (int signum) {
     systemcall (kill (idle.pid, SIGCONT));
 
     WRITESTRING("---- leaving scheduler\n");
+
+    exit(status);d
+
 }
 
 void process_done (int signum) {
@@ -149,6 +171,11 @@ void create_idle() {
 
 int main(int argc, char **argv) {
 
+    boot();
+
+    create_idle();
+    running = &idle;
+
     if (argc > 1) {
         for (int i = 0; i < argc; i++) {
             processes[i].name = argv[i + 1];
@@ -157,6 +184,8 @@ int main(int argc, char **argv) {
             processes[i].interrupts = 0;
             processes[i].switches = 0;
 
+            WRITESTRING("Process");
+
             //printf(process);
             //assert(printf("this is the process", i) != -1);
 
@@ -164,10 +193,6 @@ int main(int argc, char **argv) {
         }
     }
 
-    boot();
-
-    create_idle();
-    running = &idle;
 
     for(ever) {
         pause();
