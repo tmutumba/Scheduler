@@ -39,6 +39,10 @@ struct PCB *running;
 int sys_time;
 int timer;
 int status;
+int process_num;
+int process;
+int counter;
+int found;
 struct sigaction alarm_handler;
 struct sigaction child_handler;
 
@@ -98,11 +102,65 @@ void create_handler(int signum, struct sigaction action, void(*handler)(int)) {
 void scheduler (int signum) {
     WRITESTRING("---- entering scheduler\n");
     assert(signum == SIGALRM);
-    /* forking starts */
-    running ->state = READY;
 
+    if (running -> state == TERMINATED) {
+        WRITESTRING ("Continuing idle: ");
+        WRITEINT (idle.pid, 6);
+        WRITESTRING ("\n");
+        running = &idle;
+        idle.state = RUNNING;
+        systemcall (kill(idle.pid, SIGCONT));
+        running->pid = idle.ppid;
+        running->name = idle.name;
+    }
+    /* forking starts */
+
+    running ->state = READY;
     running ->switches ++;
-    running ->interrupts ++;
+
+    process_num = 0;
+    while(found == 0 && process_num < counter){
+        if(processes[process_num].state == NEW){
+            found = 1;
+        }else{
+            process_num ++;
+        }
+    }
+    if(found){
+        running = &processes[process_num];
+        running->state = RUNNING;
+        assert(processes[process_num].started = time(NULL));
+        running->interrupts = 0;
+        running->switches = 0;
+        assert((running->pid = fork() !=-1);
+
+        if(running->pid <0){
+            perror("fork()");
+            exit(-1)
+        }
+        else if (running->pid == 0){
+            int status = execl(running->name, running->name, NULL);
+            perror("execl() failed \n");
+            exit(status);
+        }
+        if(running->pid != processes[process_num].pid){
+            processes[process_num].switches ++;
+        }
+    } else{
+        if(process == counter){
+            process = 0;
+        }
+        if(processes[process].state == READY){
+            if(running->pid != processes[process].pid){
+                running->switches ++;
+            }
+
+            running = &processes[process];
+            systemcall(kill(running->pid, SIGCONT));
+            process++;
+        }
+    }
+    /*running ->interrupts ++;
 
 
     processes[getpid()].pid = fork();
@@ -114,27 +172,28 @@ void scheduler (int signum) {
     processes[getpid()].started = clock();
     processes[getpid()].state = RUNNING;
 
-    status = execl(processes[getpid()].name, processes[getpid()].name, NULL);
-
-    WRITESTRING ("Continuing idle: ");
-    WRITEINT (idle.pid, 6);
-    WRITESTRING ("\n");
-    running = &idle;
-    idle.state = RUNNING;
-    systemcall (kill (idle.pid, SIGCONT));
+    status = execl(processes[getpid()].name, processes[getpid()].name, NULL);*/
 
     WRITESTRING("---- leaving scheduler\n");
-
-    exit(status);
-
 }
 
 void process_done (int signum) {
     WRITESTRING("---- entering process_done\n");
     assert (signum == SIGCHLD);
 
-    WRITESTRING ("Timer died, cleaning up and killing everything\n");
-    systemcall(kill(0, SIGTERM));
+    if(running->pid != idle.pid){
+        running->state = TERMINATED;
+        WRITESTRING("\nProcess: ");
+        WRITEINT(running->pid, 7);
+        WRITESTRING("\nInterrupts: ");
+        WRITEINT(running->interrupts, 7);
+        WRITESTRING("\nTime: ");
+        WRITEINT(time(NULL) - running->started, 10);
+    } else {
+
+        WRITESTRING ("Timer died, cleaning up and killing everything\n");
+        systemcall(kill(0, SIGTERM));
+    }
 
     WRITESTRING ("---- leaving process_done\n");
 }
