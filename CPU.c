@@ -119,6 +119,7 @@ void scheduler (int signum) {
     running ->switches ++;
 
     process_num = 0;
+    found = 0;
     while(found == 0 && process_num < counter){
         if(processes[process_num].state == NEW){
             found = 1;
@@ -132,11 +133,11 @@ void scheduler (int signum) {
         assert(processes[process_num].started = time(NULL));
         running->interrupts = 0;
         running->switches = 0;
-        assert((running->pid = fork() !=-1);
+        assert((running->pid = fork()) != -1);
 
         if(running->pid <0){
             perror("fork()");
-            exit(-1)
+            exit(-1);
         }
         else if (running->pid == 0){
             int status = execl(running->name, running->name, NULL);
@@ -174,6 +175,7 @@ void scheduler (int signum) {
 
     status = execl(processes[getpid()].name, processes[getpid()].name, NULL);*/
 
+    sleep(2);
     WRITESTRING("---- leaving scheduler\n");
 }
 
